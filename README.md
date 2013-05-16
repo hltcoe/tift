@@ -1,4 +1,4 @@
 tift
 ====
 
-T is for tokenization
+Tift is for tokenization
