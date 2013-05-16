@@ -1,4 +1,4 @@
 tift
 ====
 
-Tokenizations important for text
+T is for tokenization
