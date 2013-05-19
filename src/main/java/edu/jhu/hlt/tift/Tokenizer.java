@@ -19,11 +19,13 @@ import edu.jhu.concrete.Concrete.SectionSegmentation;
 import edu.jhu.concrete.Concrete.Sentence;
 import edu.jhu.concrete.Concrete.SentenceSegmentation;
 import edu.jhu.concrete.Concrete.TextSpan;
+
 import edu.jhu.concrete.Concrete.Tokenization;
 import edu.jhu.concrete.Concrete.Section.Kind;
+
 import edu.jhu.concrete.util.IdUtil;
 import edu.jhu.concrete.util.ProtoFactory;
-import edu.jhu.concrete.util.TokenizationUtil;
+
 
 /**
  * Enumeration of supported tokenizations.
@@ -68,8 +70,8 @@ public enum Tokenizer {
     TWITTER {
         @Override
         public Tokenization tokenizeToConcrete(String text, int textStartPosition) {
-            // TODO Auto-generated method stub
-            return null;
+            TaggedTokenizationOutput tto = TwitterTokenizer.tokenize(text);
+            return ConcreteTokenization.generateConcreteTokenization(tto);
         }
 
         @Override
@@ -94,6 +96,8 @@ public enum Tokenizer {
     //
     public abstract Tokenization tokenizeToConcrete(String text, int textStartPosition);
     public abstract List<String> tokenize(String text);
+    
+    
 
     //
     // Patterns & sets of patterns.
@@ -259,8 +263,10 @@ public enum Tokenizer {
             String text, int startPosition) {
         List<String> tokenList = tokenizationType.tokenize(text);
         int[] offsets = getOffsets(text, tokenList);
-        return TokenizationUtil.generateConcreteTokenization(tokenList, offsets, startPosition);
+        return ConcreteTokenization.generateConcreteTokenization(tokenList, offsets, startPosition);
     }
+    
+//    public static Concrete.Tokenization generateConcreteTokenizationWithTags(Tokenizer tokenizationType,  
     
     public static Communication generateCommunicationWithSingleTokenization (String corpusName, String commId, 
             Tokenizer tokenizationType, String text, int startPosition) {

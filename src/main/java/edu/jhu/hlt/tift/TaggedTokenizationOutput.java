@@ -8,12 +8,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Wrapper around the data structure returned by the twitter tokenizer.
+ * A data structure that has the following elements:
+ * <pre>
+ * List of tokens
+ * List of token tags
+ * List of offsets
+ * </pre>
+ * 
+ * Initially created as a wrapper around the data structure returned by the twitter tokenizer.
  * 
  * @author max
  *
  */
-public class TwitterTokenizationOutput {
+public class TaggedTokenizationOutput {
 
     private final List<String> tokens;
     private final List<String> tokenTags;
@@ -22,13 +29,13 @@ public class TwitterTokenizationOutput {
     /**
      * 
      */
-    public TwitterTokenizationOutput(List<String> tokens, List<String> tokenTags, List<Integer> offsets) {
+    public TaggedTokenizationOutput(List<String> tokens, List<String> tokenTags, List<Integer> offsets) {
         this.tokens = tokens;
         this.tokenTags = tokenTags;
         this.offsets = offsets;
     }
     
-    public TwitterTokenizationOutput(String[][] twitterTokenizerOutput) {
+    public TaggedTokenizationOutput(String[][] twitterTokenizerOutput) {
         this.tokens = Arrays.asList(twitterTokenizerOutput[0]);
         this.tokenTags = Arrays.asList(twitterTokenizerOutput[1]);
         String[] offsetStrings = twitterTokenizerOutput[2];

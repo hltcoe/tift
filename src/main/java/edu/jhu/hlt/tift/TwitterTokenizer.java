@@ -352,8 +352,8 @@ public class TwitterTokenizer {
         return y;
     }
     
-    public static TwitterTokenizationOutput tokenize(String text) {
-        return new TwitterTokenizationOutput(tokenizeToArray(text));
+    public static TaggedTokenizationOutput tokenize(String text) {
+        return new TaggedTokenizationOutput(tokenizeToArray(text));
     }
 
     public static String[] tokenizeTweet(String text) {

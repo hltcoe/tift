@@ -11,7 +11,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.jhu.concrete.Concrete.TextSpan;
 import edu.jhu.concrete.Concrete.Token;
+import edu.jhu.concrete.Concrete.TokenTagging;
+import edu.jhu.concrete.Concrete.TokenTagging.TaggedToken;
 import edu.jhu.concrete.Concrete.Tokenization;
 
 public class TokenizerTest {
@@ -27,14 +30,37 @@ public class TokenizerTest {
     }
 
     @Test
-    public void testTokenizeToConcrete() {
+    public void testTokenizeToConcreteWhitespace() {
         String text = "hello world test tokens foo";
         int expectedTokenCount = 5;
         Tokenization ct = Tokenizer.WHITESPACE.tokenizeToConcrete(text, 0);
         List<Token> tokenList = ct.getTokenList();
         assertEquals(expectedTokenCount, tokenList.size());
-        for (Token t : tokenList)
+        for (Token t : tokenList) {
             logger.info("Got token: " + t.getTokenId() + " with text: " + t.getText());
+            TextSpan ts = t.getTextSpan();
+            logger.info("Text span of this token: " + ts.getStart() + " - " + ts.getEnd());
+        }
+    }
+    
+    @Test
+    public void testTokenizeToConcreteTwitter() {
+        String text = "hello world test foo :-)";
+        int expectedTokenCount = 5;
+        Tokenization ct = Tokenizer.TWITTER.tokenizeToConcrete(text, 0);
+        List<Token> tokenList = ct.getTokenList();
+        assertEquals(expectedTokenCount, tokenList.size());
+        for (Token t : tokenList) {
+            logger.info("Got token: " + t.getTokenId() + " with text: " + t.getText());
+            TextSpan ts = t.getTextSpan();
+            logger.info("Text span of this token: " + ts.getStart() + " - " + ts.getEnd());
+        }
+        
+        for (TokenTagging tt : ct.getPosTagsList()) {
+            for (TaggedToken t : tt.getTaggedTokenList()) {
+                logger.info("Got tagging: " + t.getTag() + " on token: " + t.getTokenId());
+            }
+        }
     }
 
     @Test
