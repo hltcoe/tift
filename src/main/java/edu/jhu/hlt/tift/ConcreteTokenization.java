@@ -17,7 +17,7 @@ import edu.jhu.concrete.util.IdUtil;
 
 
 /**
- * Utility class for {@link Concrete.Tokenization} related code.
+ * Utility class for {@link Tokenization} related code.
  * 
  * @author max
  *
@@ -42,7 +42,7 @@ public class ConcreteTokenization {
     }
     
     /**
-     * Wrapper around generateConcreteTokenization() that takes an array of
+     * Wrapper around {@link #generateConcreteTokenization(List, int[], int)} that takes an array of
      * Strings (tokens).
      * 
      * @see #generateConcreteTokenization(List, int[], int)
@@ -53,14 +53,14 @@ public class ConcreteTokenization {
      *            - an array of integers (offsets)
      * @param startPos
      *            - starting position of the text
-     * @return a {@link Concrete.Tokenization} object with correct tokenization
+     * @return a {@link Tokenization} object with correct tokenization
      */
     public static Concrete.Tokenization generateConcreteTokenization(String[] tokens, int[] offsets, int startPos) {
         return generateConcreteTokenization(Arrays.asList(tokens), offsets, startPos);
     }
     
     /**
-     * Generate a {@link Concrete.Tokenization} object from a list of tokens,
+     * Generate a {@link Tokenization} object from a list of tokens,
      * list of offsets, and start position of the text (e.g., first text
      * character in the text).
      * 
@@ -70,7 +70,7 @@ public class ConcreteTokenization {
      *            - an array of integers (offsets)
      * @param startPos
      *            - starting position of the text
-     * @return a {@link Concrete.Tokenization} object with correct tokenization
+     * @return a {@link Tokenization} object with correct tokenization
      */
     public static Concrete.Tokenization generateConcreteTokenization(List<String> tokens, int[] offsets, int startPos) {
         Concrete.Tokenization.Builder tokenizationBuilder = Concrete.Tokenization.newBuilder().setUuid(IdUtil.generateUUID())
@@ -99,14 +99,14 @@ public class ConcreteTokenization {
      *            a {@link List} of offsets (Integer objects)
      * @param startPos
      *            - starting position of the text
-     * @return a {@link Concrete.Tokenization} object with correct tokenization
+     * @return a {@link Tokenization} object with correct tokenization
      */
     public static Concrete.Tokenization generateConcreteTokenization(List<String> tokens, List<Integer> offsets, int startPos) {
         return generateConcreteTokenization(tokens, convertIntegers(offsets), startPos);
     }
 
     /**
-     * Generate a {@link Concrete.Tokenization} object from a list of tokens,
+     * Generate a {@link Tokenization} object from a list of tokens,
      * list of tags, list of offsets, and start position of the text (e.g., first text
      * character in the text). Assumes tags are part of speech tags.
      * 
@@ -121,7 +121,7 @@ public class ConcreteTokenization {
      *            - an array of integers (offsets)
      * @param startPos
      *            - starting position of the text
-     * @return a {@link Concrete.Tokenization} object with correct tokenization and token tagging
+     * @return a {@link Tokenization} object with correct tokenization and token tagging
      */
     public static Concrete.Tokenization generateConcreteTokenization(List<String> tokens, List<String> tokenTags, 
             int[] offsets, int startPos) {

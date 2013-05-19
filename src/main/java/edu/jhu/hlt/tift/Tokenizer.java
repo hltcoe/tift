@@ -247,7 +247,7 @@ public enum Tokenizer {
      * Wrapper around getOffsets that takes a {@link List} of Strings instead of
      * an array.
      * 
-     * @see getOffsets()
+     * @see #getOffsets(String, String[])
      * 
      * @param text
      *            - text that was tokenized
