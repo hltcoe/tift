@@ -11,7 +11,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.jhu.concrete.Concrete;
+import edu.jhu.concrete.Concrete.Communication;
+import edu.jhu.concrete.Concrete.CommunicationGUID;
+import edu.jhu.concrete.Concrete.KnowledgeGraph;
+import edu.jhu.concrete.Concrete.Section;
+import edu.jhu.concrete.Concrete.SectionSegmentation;
+import edu.jhu.concrete.Concrete.Sentence;
+import edu.jhu.concrete.Concrete.SentenceSegmentation;
+import edu.jhu.concrete.Concrete.TextSpan;
 import edu.jhu.concrete.Concrete.Tokenization;
+import edu.jhu.concrete.Concrete.Section.Kind;
+import edu.jhu.concrete.util.IdUtil;
+import edu.jhu.concrete.util.ProtoFactory;
 import edu.jhu.concrete.util.TokenizationUtil;
 
 /**
@@ -249,5 +260,37 @@ public enum Tokenizer {
         List<String> tokenList = tokenizationType.tokenize(text);
         int[] offsets = getOffsets(text, tokenList);
         return TokenizationUtil.generateConcreteTokenization(tokenList, offsets, startPosition);
+    }
+    
+    public static Communication generateCommunicationWithSingleTokenization (String corpusName, String commId, 
+            Tokenizer tokenizationType, String text, int startPosition) {
+        Concrete.Tokenization tokenization = generateConcreteTokenization(tokenizationType, text, startPosition);
+        TextSpan ts = TextSpan.newBuilder().setStart(0).setEnd(text.length()).build();
+        Sentence sentence = Sentence.newBuilder()
+                .setUuid(IdUtil.generateUUID())
+                .addTokenization(tokenization)
+                .setTextSpan(ts)
+                .build();
+        SentenceSegmentation sentSeg = SentenceSegmentation.newBuilder()
+                .setUuid(IdUtil.generateUUID())
+                .addSentence(sentence)
+                .build();
+        Section section = Section.newBuilder()
+                .setUuid(IdUtil.generateUUID())
+                .addSentenceSegmentation(sentSeg)
+                .setKind(Kind.OTHER)
+                .setTextSpan(ts)
+                .build();
+        SectionSegmentation sectSeg = SectionSegmentation.newBuilder()
+                .setUuid(IdUtil.generateUUID())
+                .addSection(section)
+                .build();
+        CommunicationGUID guid = ProtoFactory.generateCommGuid(corpusName, commId);
+        KnowledgeGraph kg = ProtoFactory.generateKnowledgeGraph();
+        Communication comm = Communication.newBuilder(ProtoFactory.generateCommunication(guid, kg))
+                .addSectionSegmentation(sectSeg)
+                .build();
+        
+        return comm;
     }
 }

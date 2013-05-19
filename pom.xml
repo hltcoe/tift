@@ -8,6 +8,28 @@
   <packaging>jar</packaging>
 
   <name>Tift</name>
+  <description>Tift - T is for Tokenization</description>
+  <url>https://github.com/hltcoe/tift</url>
+  
+  <scm>
+    <url>https://github.com/hltcoe/tift</url>
+    <connection>scm:git:git://github.com/hltcoe/tift.git</connection>
+    <developerConnection>scm:git:git@github.com:hltcoe/tift.git</developerConnection>
+  </scm>
+
+  <issueManagement>
+    <url>https://github.com/hltcoe/tift/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <email>max.thomas@jhu.edu</email>
+      <name>Max Thomas</name>
+      <url>https://github.com/maxthomas</url>
+      <id>maxthomas</id>
+    </developer>
+  </developers>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
