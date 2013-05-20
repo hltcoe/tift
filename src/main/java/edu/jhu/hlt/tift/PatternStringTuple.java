@@ -46,7 +46,7 @@ public class PatternStringTuple {
      * 
      * @param patterns 
      * @param entries
-     * @return
+     * @return a {@link List} of {@link PatternStringTuple} objects
      */
     public static List<PatternStringTuple> mapPatterns(String[] patterns, String[] entries) {
         final List<PatternStringTuple> tupleList = new ArrayList<>();
