@@ -109,15 +109,27 @@
       <artifactId>concrete-java</artifactId>
       <version>1.0.0</version>
     </dependency>
-    <dependency>
+<!--    <dependency>
       <groupId>edu.jhu.concrete</groupId>
       <artifactId>concrete-protobufs</artifactId>
       <version>1.0.2-SNAPSHOT</version>
-    </dependency>
+    </dependency> -->
     <dependency> 
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.0.7</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>concrete-mvn-repo</id>
+      <url>https://raw.github.com/hltcoe/concrete/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  
 </project>
