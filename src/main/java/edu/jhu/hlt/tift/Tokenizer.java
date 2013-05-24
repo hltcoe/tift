@@ -133,7 +133,7 @@ public enum Tokenizer {
      * Sasa Petrovic's tokenization scheme.
      * 
      * @param text - text to tokenize
-     * @return
+     * @return a list of Strings that represent tokens.
      */
     static List<String> tokenizeTweetPetrovic (String text) {
         int length = text.length();
