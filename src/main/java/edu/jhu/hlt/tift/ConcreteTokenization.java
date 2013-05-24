@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.jhu.concrete.Concrete;
-import edu.jhu.concrete.Concrete.TokenTagging;
-import edu.jhu.concrete.Concrete.Tokenization;
-import edu.jhu.concrete.Concrete.TokenTagging.TaggedToken;
-import edu.jhu.concrete.util.IdUtil;
+import edu.jhu.hlt.concrete.Concrete;
+import edu.jhu.hlt.concrete.Concrete.TokenTagging;
+import edu.jhu.hlt.concrete.Concrete.Tokenization;
+import edu.jhu.hlt.concrete.Concrete.TokenTagging.TaggedToken;
+import edu.jhu.hlt.concrete.util.IdUtil;
 
 
 /**

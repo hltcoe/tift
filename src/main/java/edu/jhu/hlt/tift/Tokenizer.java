@@ -10,21 +10,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.jhu.concrete.Concrete;
-import edu.jhu.concrete.Concrete.Communication;
-import edu.jhu.concrete.Concrete.CommunicationGUID;
-import edu.jhu.concrete.Concrete.KnowledgeGraph;
-import edu.jhu.concrete.Concrete.Section;
-import edu.jhu.concrete.Concrete.SectionSegmentation;
-import edu.jhu.concrete.Concrete.Sentence;
-import edu.jhu.concrete.Concrete.SentenceSegmentation;
-import edu.jhu.concrete.Concrete.TextSpan;
+import edu.jhu.hlt.concrete.Concrete;
+import edu.jhu.hlt.concrete.Concrete.Communication;
+import edu.jhu.hlt.concrete.Concrete.CommunicationGUID;
+import edu.jhu.hlt.concrete.Concrete.KnowledgeGraph;
+import edu.jhu.hlt.concrete.Concrete.Section;
+import edu.jhu.hlt.concrete.Concrete.SectionSegmentation;
+import edu.jhu.hlt.concrete.Concrete.Sentence;
+import edu.jhu.hlt.concrete.Concrete.SentenceSegmentation;
+import edu.jhu.hlt.concrete.Concrete.TextSpan;
 
-import edu.jhu.concrete.Concrete.Tokenization;
-import edu.jhu.concrete.Concrete.Section.Kind;
+import edu.jhu.hlt.concrete.Concrete.Tokenization;
+import edu.jhu.hlt.concrete.Concrete.Section.Kind;
 
-import edu.jhu.concrete.util.IdUtil;
-import edu.jhu.concrete.util.ProtoFactory;
+import edu.jhu.hlt.concrete.util.IdUtil;
+import edu.jhu.hlt.concrete.util.ProtoFactory;
 
 
 /**
