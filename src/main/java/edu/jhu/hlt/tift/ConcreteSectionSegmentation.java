@@ -97,7 +97,7 @@ public class ConcreteSectionSegmentation {
      * @return the {@link Communication} with an additional
      *         {@link SectionSegmentation}
      */
-    public Communication appendSectionSegmentation(Tokenizer tokenization,
+    public static Communication appendSectionSegmentation(Tokenizer tokenization,
             Communication comm) {
         SectionSegmentation ss = 
                 generateSectionSegmentation(tokenization, comm.getText());
