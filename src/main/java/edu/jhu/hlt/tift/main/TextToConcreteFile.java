@@ -1,5 +1,7 @@
 /**
- * 
+ * Copyright 2012-2013 Johns Hopkins University HLTCOE. All rights reserved.
+ * This software is released under the 2-clause BSD license.
+ * See LICENSE in the project root directory.
  */
 package edu.jhu.hlt.tift.main;
 
@@ -11,8 +13,8 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.jhu.concrete.Concrete.Communication;
-import edu.jhu.concrete.io.ProtocolBufferWriter;
+import edu.jhu.hlt.concrete.Concrete.Communication;
+import edu.jhu.hlt.concrete.io.ProtocolBufferWriter;
 import edu.jhu.hlt.tift.Tokenizer;
 
 /**

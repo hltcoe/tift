@@ -11,11 +11,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.jhu.concrete.Concrete.TextSpan;
-import edu.jhu.concrete.Concrete.Token;
-import edu.jhu.concrete.Concrete.TokenTagging;
-import edu.jhu.concrete.Concrete.TokenTagging.TaggedToken;
-import edu.jhu.concrete.Concrete.Tokenization;
+import edu.jhu.hlt.concrete.Concrete.TextSpan;
+import edu.jhu.hlt.concrete.Concrete.Token;
+import edu.jhu.hlt.concrete.Concrete.TokenTagging;
+import edu.jhu.hlt.concrete.Concrete.TokenTagging.TaggedToken;
+import edu.jhu.hlt.concrete.Concrete.Tokenization;
 
 public class TokenizerTest {
 
