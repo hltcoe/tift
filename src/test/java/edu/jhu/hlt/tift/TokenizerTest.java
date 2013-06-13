@@ -1,8 +1,13 @@
 package edu.jhu.hlt.tift;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.After;
@@ -37,9 +42,9 @@ public class TokenizerTest {
         List<Token> tokenList = ct.getTokenList();
         assertEquals(expectedTokenCount, tokenList.size());
         for (Token t : tokenList) {
-            logger.info("Got token: " + t.getTokenId() + " with text: " + t.getText());
+            logger.info("Got token: {} with text: {}", t.getTokenId(), t.getText());
             TextSpan ts = t.getTextSpan();
-            logger.info("Text span of this token: " + ts.getStart() + " - " + ts.getEnd());
+            logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnd());
         }
     }
     
@@ -51,14 +56,33 @@ public class TokenizerTest {
         List<Token> tokenList = ct.getTokenList();
         assertEquals(expectedTokenCount, tokenList.size());
         for (Token t : tokenList) {
-            logger.info("Got token: " + t.getTokenId() + " with text: " + t.getText());
+            logger.info("Got token: {} with text: {}", t.getTokenId(), t.getText());
             TextSpan ts = t.getTextSpan();
-            logger.info("Text span of this token: " + ts.getStart() + " - " + ts.getEnd());
+            logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnd());
         }
         
         for (TokenTagging tt : ct.getPosTagsList()) {
             for (TaggedToken t : tt.getTaggedTokenList()) {
-                logger.info("Got tagging: " + t.getTag() + " on token: " + t.getTokenId());
+                logger.info("Got tagging: {} on token: {}", t.getTag(), t.getTokenId());
+            }
+        }
+    }
+    
+    @Test
+    public void testTokenizePTB() throws IOException {
+        String docText = readFile("src/test/resources/AFP_ENG_20080819.0409.LDC2009T13", StandardCharsets.UTF_8);
+
+        Tokenization ct = Tokenizer.PTB.tokenizeToConcrete(docText, 0);
+        List<Token> tokenList = ct.getTokenList();
+        for (Token t : tokenList) {
+            logger.info("Got token: {} with text: {}", t.getTokenId(), t.getText());
+            TextSpan ts = t.getTextSpan();
+            logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnd());
+        }
+        
+        for (TokenTagging tt : ct.getPosTagsList()) {
+            for (TaggedToken t : tt.getTaggedTokenList()) {
+                logger.info("Got tagging: {} on token: {}", t.getTag(), t.getTokenId());
             }
         }
     }
@@ -70,4 +94,8 @@ public class TokenizerTest {
         assertEquals(4, tokens.size());
     }
 
+    static String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+    }
 }
