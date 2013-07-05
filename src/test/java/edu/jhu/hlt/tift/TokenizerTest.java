@@ -68,6 +68,7 @@ public class TokenizerTest {
         }
     }
     
+    /*
     @Test
     public void testTokenizePTB() throws IOException {
         String docText = readFile("src/test/resources/AFP_ENG_20080819.0409.LDC2009T13", StandardCharsets.UTF_8);
@@ -86,6 +87,7 @@ public class TokenizerTest {
             }
         }
     }
+    */
 
     @Test
     public void testTokenize() {
