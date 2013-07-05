@@ -75,7 +75,7 @@ public class ConcreteSectionSegmentation {
         Section.Builder scb = Section.newBuilder()
                 .addSentenceSegmentation(ssb)
                 .setTextSpan(ts)
-                .setKind(Section.Kind.PARAGRAPH)
+                .setKind(Section.Kind.OTHER)
                 .setUuid(IdUtil.generateUUID());
         SectionSegmentation.Builder scsb = SectionSegmentation.newBuilder()
                 .addSection(scb)

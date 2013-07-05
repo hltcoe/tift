@@ -194,7 +194,7 @@
     <dependency>
       <groupId>edu.jhu.hlt.concrete</groupId>
       <artifactId>concrete-java</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.14</version>
     </dependency>
     <dependency> 
       <groupId>ch.qos.logback</groupId>
