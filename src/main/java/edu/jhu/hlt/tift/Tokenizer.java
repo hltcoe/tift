@@ -9,6 +9,10 @@ package edu.jhu.hlt.tift;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.BufferedReader;
 
 import edu.jhu.hlt.concrete.Concrete;
 import edu.jhu.hlt.concrete.Concrete.Communication;
@@ -29,7 +33,7 @@ import edu.jhu.hlt.concrete.util.ProtoFactory;
 
 /**
  * Enumeration of supported tokenizations.
- * 
+ *
  * @author max
  */
 public enum Tokenizer {
@@ -96,8 +100,8 @@ public enum Tokenizer {
     //
     public abstract Tokenization tokenizeToConcrete(String text, int textStartPosition);
     public abstract List<String> tokenize(String text);
-    
-    
+
+
 
     //
     // Patterns & sets of patterns.
@@ -108,7 +112,7 @@ public enum Tokenizer {
     //
     /**
      * Return the offsets of tokens in text.
-     * 
+     *
      * @param text
      *            - text to be used
      * @param tokens
@@ -131,7 +135,7 @@ public enum Tokenizer {
 
     /**
      * Sasa Petrovic's tokenization scheme.
-     * 
+     *
      * @param text - text to tokenize
      * @return a list of Strings that represent tokens.
      */
@@ -239,16 +243,16 @@ public enum Tokenizer {
                 update = false;
             }
         }
-        
+
         return content;
     }
 
     /**
      * Wrapper around getOffsets that takes a {@link List} of Strings instead of
      * an array.
-     * 
+     *
      * @see #getOffsets(String, String[])
-     * 
+     *
      * @param text
      *            - text that was tokenized
      * @param tokenList
@@ -259,16 +263,16 @@ public enum Tokenizer {
         return getOffsets(text, tokenList.toArray(new String[0]));
     }
 
-    public static Concrete.Tokenization generateConcreteTokenization(Tokenizer tokenizationType, 
+    public static Concrete.Tokenization generateConcreteTokenization(Tokenizer tokenizationType,
             String text, int startPosition) {
         List<String> tokenList = tokenizationType.tokenize(text);
         int[] offsets = getOffsets(text, tokenList);
         return ConcreteTokenization.generateConcreteTokenization(tokenList, offsets, startPosition);
     }
-    
-//    public static Concrete.Tokenization generateConcreteTokenizationWithTags(Tokenizer tokenizationType,  
-    
-    public static Communication generateCommunicationWithSingleTokenization (String corpusName, String commId, 
+
+//    public static Concrete.Tokenization generateConcreteTokenizationWithTags(Tokenizer tokenizationType,
+
+    public static Communication generateCommunicationWithSingleTokenization (String corpusName, String commId,
             Tokenizer tokenizationType, String text, int startPosition) {
         Concrete.Tokenization tokenization = generateConcreteTokenization(tokenizationType, text, startPosition);
         TextSpan ts = TextSpan.newBuilder().setStart(0).setEnd(text.length()).build();
@@ -296,7 +300,27 @@ public enum Tokenizer {
         Communication comm = Communication.newBuilder(ProtoFactory.generateCommunication(guid, kg))
                 .addSectionSegmentation(sectSeg)
                 .build();
-        
+
         return comm;
     }
+
+    public static void main (String[] args) throws Exception {
+	if (args.length != 2)
+	    throw new Exception("expects 2 arguments: tokenizer-type filename");
+
+	Tokenizer t = Tokenizer.valueOf(args[0].toUpperCase());
+	BufferedReader b = new BufferedReader(new InputStreamReader(new FileInputStream(args[1]),"UTF-8"));
+	String line;
+	List<String> toks;
+	while ((line = b.readLine()) != null) {
+	    toks = t.tokenize(line);
+	    if (toks.size() > 0) {
+		System.out.print(toks.elementAt(0));
+		for (int i = 1; i < toks.size(); i++)
+		    System.out.print(toks.elementAt(i) + " ");
+		System.out.println();
+	    }
+	}
+    }
+
 }
