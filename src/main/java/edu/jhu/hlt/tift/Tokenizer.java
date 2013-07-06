@@ -315,9 +315,9 @@ public enum Tokenizer {
 	while ((line = b.readLine()) != null) {
 	    toks = t.tokenize(line);
 	    if (toks.size() > 0) {
-		System.out.print(toks.elementAt(0));
+		System.out.print(toks.get(0));
 		for (int i = 1; i < toks.size(); i++)
-		    System.out.print(toks.elementAt(i) + " ");
+		    System.out.print(toks.get(i) + " ");
 		System.out.println();
 	    }
 	}
