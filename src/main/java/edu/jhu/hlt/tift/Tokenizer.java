@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import edu.jhu.hlt.concrete.Concrete;
 import edu.jhu.hlt.concrete.Concrete.Communication;
 import edu.jhu.hlt.concrete.Concrete.CommunicationGUID;
-import edu.jhu.hlt.concrete.Concrete.KnowledgeGraph;
 import edu.jhu.hlt.concrete.Concrete.Section;
 import edu.jhu.hlt.concrete.Concrete.SectionSegmentation;
 import edu.jhu.hlt.concrete.Concrete.Sentence;
@@ -296,8 +295,7 @@ public enum Tokenizer {
                 .addSection(section)
                 .build();
         CommunicationGUID guid = ProtoFactory.generateCommGuid(corpusName, commId);
-        KnowledgeGraph kg = ProtoFactory.generateKnowledgeGraph();
-        Communication comm = Communication.newBuilder(ProtoFactory.generateCommunication(guid, kg))
+        Communication comm = Communication.newBuilder(ProtoFactory.generateCommunication(guid))
                 .addSectionSegmentation(sectSeg)
                 .build();
 

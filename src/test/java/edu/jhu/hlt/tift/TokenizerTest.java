@@ -42,7 +42,7 @@ public class TokenizerTest {
         List<Token> tokenList = ct.getTokenList();
         assertEquals(expectedTokenCount, tokenList.size());
         for (Token t : tokenList) {
-            logger.info("Got token: {} with text: {}", t.getTokenId(), t.getText());
+            logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
             TextSpan ts = t.getTextSpan();
             logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnd());
         }
@@ -56,14 +56,14 @@ public class TokenizerTest {
         List<Token> tokenList = ct.getTokenList();
         assertEquals(expectedTokenCount, tokenList.size());
         for (Token t : tokenList) {
-            logger.info("Got token: {} with text: {}", t.getTokenId(), t.getText());
+            logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
             TextSpan ts = t.getTextSpan();
             logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnd());
         }
         
         for (TokenTagging tt : ct.getPosTagsList()) {
             for (TaggedToken t : tt.getTaggedTokenList()) {
-                logger.info("Got tagging: {} on token: {}", t.getTag(), t.getTokenId());
+                logger.info("Got tagging: {} on token: {}", t.getTag(), t.getTokenIndex());
             }
         }
     }

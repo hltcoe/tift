@@ -80,7 +80,7 @@ public class ConcreteTokenization {
             String token = tokens.get(tokenId);
             int start = startPos + offsets[tokenId];
             int end = start + token.length();
-            tokenizationBuilder.addTokenBuilder().setTokenId(tokenId).setText(token)
+            tokenizationBuilder.addTokenBuilder().setTokenIndex(tokenId).setText(token)
                     .setTextSpan(Concrete.TextSpan.newBuilder().setStart(start).setEnd(end));
         }
 
@@ -133,7 +133,7 @@ public class ConcreteTokenization {
             String tag = tokenTags.get(i);
             if (tag != null) {
                 TaggedToken tt = TaggedToken.newBuilder()
-                    .setTokenId(offsets[i])
+                    .setTokenIndex(offsets[i])
                     .setTag(tokenTags.get(i))
                     .build();
                 ttBuilder.addTaggedToken(tt);
