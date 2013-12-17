@@ -16,7 +16,7 @@ import edu.jhu.hlt.concrete.Token;
 import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.TokenizationKind;
-import edu.jhu.hlt.concrete.UUID;
+import edu.jhu.hlt.concrete.util.ConcreteUtil;
 
 /**
  * Utility class for {@link Tokenization} related code.
@@ -79,7 +79,7 @@ public class ConcreteTokenization {
     Tokenization tkz = new Tokenization();
     tkz.kind = TokenizationKind.TOKEN_LIST;
     tkz.metadata = new AnnotationMetadata(tiftMetadata);
-    tkz.uuid = new UUID(java.util.UUID.randomUUID().toString());
+    tkz.uuid = ConcreteUtil.generateUUID();
     
     // Note: we use token index as token id.
     for (int tokenId = 0; tokenId < tokens.size(); ++tokenId) {
@@ -131,7 +131,7 @@ public class ConcreteTokenization {
   public static Tokenization generateConcreteTokenization(List<String> tokens, List<String> tokenTags, int[] offsets, int startPos) {
     Tokenization tokenization = generateConcreteTokenization(tokens, offsets, startPos);
     TokenTagging tt = new TokenTagging();
-    tt.setUuid(new UUID(java.util.UUID.randomUUID().toString()));
+    tt.setUuid(ConcreteUtil.generateUUID());
     tt.setMetadata(new AnnotationMetadata(tiftMetadata));
     for (int i = 0; i < tokens.size(); i++) {
       String tag = tokenTags.get(i);

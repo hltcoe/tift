@@ -17,7 +17,7 @@ import edu.jhu.hlt.tift.Tokenizer;
 public class AnnoPipelineCommand {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnnoPipelineCommand.class);
-	private static final String TokenizerTypePrefix = "edu.jhu.hlt.tift.Tokenizer.";
+	//private static final String TokenizerTypePrefix = "edu.jhu.hlt.tift.Tokenizer.";
 	
 	/**
      * 
