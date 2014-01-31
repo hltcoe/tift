@@ -9,6 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.thrift.TDeserializer;
+import org.apache.thrift.TException;
+import org.apache.thrift.TSerializer;
+import org.apache.thrift.protocol.TBinaryProtocol;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,6 +75,16 @@ public class TokenizerTest {
     String text = "hello world test tokens";
     List<String> tokens = Tokenizer.BASIC.tokenize(text);
     assertEquals(4, tokens.size());
+  }
+  
+  @Test
+  public void thriftReadWrite() throws TException {
+    String text = "hello world test tokens";
+    Tokenization t = Tokenizer.TWITTER.tokenizeToConcrete(text, 0);
+    byte[] bytez = new TSerializer(new TBinaryProtocol.Factory()).serialize(t);
+    Tokenization dT = new Tokenization();
+    new TDeserializer(new TBinaryProtocol.Factory()).deserialize(dT, bytez);
+    assertEquals(4, dT.getTokenList().size());
   }
 
   static String readFile(String path, Charset encoding) throws IOException {
