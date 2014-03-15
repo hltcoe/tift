@@ -34,6 +34,7 @@
   <properties>
     <github.global.server>github</github.global.server>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <concrete.version>2.0.6-SNAPSHOT</concrete.version>
   </properties>
 
   <build>
@@ -194,12 +195,12 @@
     <dependency>
       <groupId>edu.jhu.hlt</groupId>
       <artifactId>concrete-core</artifactId>
-      <version>2.0.5</version>
+      <version>${concrete.version}</version>
     </dependency>
     <dependency>
       <groupId>edu.jhu.hlt</groupId>
       <artifactId>concrete-util</artifactId>
-      <version>2.0.5</version>
+      <version>${concrete.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
