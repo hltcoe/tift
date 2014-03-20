@@ -4,7 +4,7 @@
 
   <groupId>edu.jhu.hlt</groupId>
   <artifactId>tift</artifactId>
-  <version>2.0.2-SNAPSHOT</version>
+  <version>2.0.2</version>
   <packaging>jar</packaging>
 
   <name>Tift</name>
@@ -34,7 +34,7 @@
   <properties>
     <github.global.server>github</github.global.server>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <concrete.version>2.0.6-SNAPSHOT</concrete.version>
+    <concrete.version>2.0.6</concrete.version>
   </properties>
 
   <build>
@@ -205,7 +205,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.5</version>
+      <version>1.7.6</version>
     </dependency>
   </dependencies>
 </project>
