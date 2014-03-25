@@ -32,11 +32,21 @@ public enum Tokenizer {
     public List<String> tokenize(String text) {
       return Arrays.asList(Rewriter.PTB.rewrite(text).split("\\s+"));
     }
+
+    @Override
+    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+      return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
+    }
   },
   WHITESPACE {
     @Override
     public Tokenization tokenizeToConcrete(String text, int textStartPosition) {
       return generateConcreteTokenization(this, text, textStartPosition);
+    }
+    
+    @Override
+    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+      return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
 
     @Override
@@ -54,6 +64,11 @@ public enum Tokenizer {
     public List<String> tokenize(String text) {
       return tokenizeTweetPetrovic(text);
     }
+
+    @Override
+    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+      return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
+    }
   },
   TWITTER {
     @Override
@@ -66,6 +81,11 @@ public enum Tokenizer {
     public List<String> tokenize(String text) {
       return TwitterTokenizer.tokenize(text).getTokens();
     }
+
+    @Override
+    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+      return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
+    }
   },
   BASIC {
     @Override
@@ -77,12 +97,18 @@ public enum Tokenizer {
     public List<String> tokenize(String text) {
       return Arrays.asList(Rewriter.BASIC.rewrite(text).split("\\s+"));
     }
+
+    @Override
+    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+      return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
+    }
   };
 
   //
   // Contract methods.
   //
   public abstract Tokenization tokenizeToConcrete(String text, int textStartPosition);
+  public abstract Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid);
 
   public abstract List<String> tokenize(String text);
 
@@ -237,6 +263,13 @@ public enum Tokenizer {
    */
   public static int[] getOffsets(String text, List<String> tokenList) {
     return getOffsets(text, tokenList.toArray(new String[0]));
+  }
+  
+  public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition, String sentUuid) {
+    List<String> tokenList = tokenizationType.tokenize(text);
+    int[] offsets = getOffsets(text, tokenList);
+    return ConcreteTokenization.generateConcreteTokenization(tokenList, offsets, startPosition)
+        .setSentenceId(sentUuid);
   }
 
   public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition) {
