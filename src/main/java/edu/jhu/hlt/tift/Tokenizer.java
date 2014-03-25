@@ -266,9 +266,7 @@ public enum Tokenizer {
   }
   
   public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition, String sentUuid) {
-    List<String> tokenList = tokenizationType.tokenize(text);
-    int[] offsets = getOffsets(text, tokenList);
-    return ConcreteTokenization.generateConcreteTokenization(tokenList, offsets, startPosition)
+    return generateConcreteTokenization(tokenizationType, text, startPosition)
         .setSentenceId(sentUuid);
   }
 
