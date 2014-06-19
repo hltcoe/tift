@@ -30,9 +30,9 @@ public class ConcreteTokenization {
 
   static {
     AnnotationMetadata am = new AnnotationMetadata();
-    am.confidence = 1;
-    am.timestamp = (System.currentTimeMillis() / 1000);
-    am.tool = "Tift Tokenizer v2.0";
+    am.setConfidence(1);
+    am.setTimestamp(System.currentTimeMillis());
+    am.setTool("Tift Tokenizer v2.0");
     tiftMetadata = new AnnotationMetadata(am);
   }
   

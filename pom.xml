@@ -32,9 +32,8 @@
   </developers>
 
   <properties>
-    <github.global.server>github</github.global.server>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <concrete.version>2.0.6</concrete.version>
+    <concrete.version>3.0.1-SNAPSHOT</concrete.version>
   </properties>
 
   <build>
@@ -121,22 +120,6 @@
 	  </dependency>
 	</dependencies>
       </plugin>
-      <plugin>
-	<groupId>com.github.github</groupId>
-	<artifactId>site-maven-plugin</artifactId>
-	<version>0.8</version>
-	<configuration>
-          <message>Creating site for ${project.version}</message>
-	</configuration>
-	<executions>
-          <execution>
-            <goals>
-              <goal>site</goal>
-            </goals>
-            <phase>site</phase>
-          </execution>
-	</executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -185,13 +168,6 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.0.13</version>
-      <!--  <scope>test</scope>  -->
-    </dependency>
-
     <dependency>
       <groupId>edu.jhu.hlt</groupId>
       <artifactId>concrete-core</artifactId>
