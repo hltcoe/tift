@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012-2014 Johns Hopkins University HLTCOE. All rights reserved.
  * This software is released under the 2-clause BSD license.
  * See LICENSE in the project root directory.
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.jhu.hlt.concrete.Tokenization;
+import edu.jhu.hlt.concrete.UUID;
 
 /**
  * Enumeration of supported tokenizations.
@@ -34,7 +35,7 @@ public enum Tokenizer {
     }
 
     @Override
-    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+    public Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid) {
       return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
   },
@@ -45,7 +46,7 @@ public enum Tokenizer {
     }
     
     @Override
-    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+    public Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid) {
       return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
 
@@ -66,7 +67,7 @@ public enum Tokenizer {
     }
 
     @Override
-    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+    public Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid) {
       return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
   },
@@ -83,7 +84,7 @@ public enum Tokenizer {
     }
 
     @Override
-    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+    public Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid) {
       return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
   },
@@ -99,7 +100,7 @@ public enum Tokenizer {
     }
 
     @Override
-    public Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid) {
+    public Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid) {
       return generateConcreteTokenization(this, text, textStartPosition, sentUuid);
     }
   };
@@ -108,7 +109,7 @@ public enum Tokenizer {
   // Contract methods.
   //
   public abstract Tokenization tokenizeToConcrete(String text, int textStartPosition);
-  public abstract Tokenization tokenizeSentence(String text, int textStartPosition, String sentUuid);
+  public abstract Tokenization tokenizeSentence(String text, int textStartPosition, UUID sentUuid);
 
   public abstract List<String> tokenize(String text);
 
@@ -265,7 +266,7 @@ public enum Tokenizer {
     return getOffsets(text, tokenList.toArray(new String[0]));
   }
   
-  public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition, String sentUuid) {
+  public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition, UUID sentUuid) {
     return generateConcreteTokenization(tokenizationType, text, startPosition)
         .setSentenceId(sentUuid);
   }

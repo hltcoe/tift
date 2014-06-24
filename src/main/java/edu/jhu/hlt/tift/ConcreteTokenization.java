@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012-2014 Johns Hopkins University HLTCOE. All rights reserved.
  * This software is released under the 2-clause BSD license.
  * See LICENSE in the project root directory.
@@ -8,7 +8,6 @@ package edu.jhu.hlt.tift;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import edu.jhu.hlt.concrete.AnnotationMetadata;
 import edu.jhu.hlt.concrete.TaggedToken;
@@ -17,6 +16,7 @@ import edu.jhu.hlt.concrete.Token;
 import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.TokenizationKind;
+import edu.jhu.hlt.concrete.util.ConcreteUUIDFactory;
 
 /**
  * Utility class for {@link Tokenization} related code.
@@ -79,7 +79,7 @@ public class ConcreteTokenization {
     Tokenization tkz = new Tokenization();
     tkz.kind = TokenizationKind.TOKEN_LIST;
     tkz.metadata = new AnnotationMetadata(tiftMetadata);
-    tkz.uuid = UUID.randomUUID().toString();
+    tkz.uuid = new ConcreteUUIDFactory().getConcreteUUID();
     
     // Note: we use token index as token id.
     for (int tokenId = 0; tokenId < tokens.size(); ++tokenId) {
@@ -131,7 +131,7 @@ public class ConcreteTokenization {
   public static Tokenization generateConcreteTokenization(List<String> tokens, List<String> tokenTags, int[] offsets, int startPos) {
     Tokenization tokenization = generateConcreteTokenization(tokens, offsets, startPos);
     TokenTagging tt = new TokenTagging();
-    tt.setUuid(UUID.randomUUID().toString());
+    tt.setUuid(new ConcreteUUIDFactory().getConcreteUUID());
     tt.setMetadata(new AnnotationMetadata(tiftMetadata));
     for (int i = 0; i < tokens.size(); i++) {
       String tag = tokenTags.get(i);
