@@ -141,8 +141,11 @@ public class ConcreteTokenization {
         tt.addToTaggedTokenList(tok);
       }
     }
-
-    tokenization.setPosTagList(tt);
+    
+    // Do not set the pos tags if everything was "null".
+    if (tt.isSetTaggedTokenList())
+      tokenization.setPosTagList(tt);
+    
     return tokenization;
   }
 
