@@ -13,6 +13,7 @@ import edu.jhu.hlt.concrete.AnnotationMetadata;
 import edu.jhu.hlt.concrete.TaggedToken;
 import edu.jhu.hlt.concrete.TextSpan;
 import edu.jhu.hlt.concrete.Token;
+import edu.jhu.hlt.concrete.TokenList;
 import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.TokenizationKind;
@@ -81,6 +82,7 @@ public class ConcreteTokenization {
     tkz.metadata = new AnnotationMetadata(tiftMetadata);
     tkz.uuid = new ConcreteUUIDFactory().getConcreteUUID();
     
+    TokenList tl = new TokenList();
     // Note: we use token index as token id.
     for (int tokenId = 0; tokenId < tokens.size(); ++tokenId) {
       String token = tokens.get(tokenId);
@@ -89,9 +91,10 @@ public class ConcreteTokenization {
       TextSpan ts = new TextSpan(start, end);
       Token tokenObj = new Token();
       tokenObj.setTextSpan(ts).setText(token).setTokenIndex(tokenId);
-      tkz.addToTokenList(tokenObj);
+      tl.addToTokens(tokenObj);
     }
 
+    tkz.setTokenList(tl);
     return tkz;
   }
 

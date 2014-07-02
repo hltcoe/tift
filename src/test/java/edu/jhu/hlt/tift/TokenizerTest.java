@@ -42,7 +42,7 @@ public class TokenizerTest {
     String text = "hello world test tokens foo";
     int expectedTokenCount = 5;
     Tokenization ct = Tokenizer.WHITESPACE.tokenizeToConcrete(text, 0);
-    List<Token> tokenList = ct.getTokenList();
+    List<Token> tokenList = ct.getTokenList().getTokens();
     assertEquals(expectedTokenCount, tokenList.size());
     for (Token t : tokenList) {
       logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
@@ -56,7 +56,7 @@ public class TokenizerTest {
     String text = "hello world test foo :-)";
     int expectedTokenCount = 5;
     Tokenization ct = Tokenizer.TWITTER.tokenizeToConcrete(text, 0);
-    List<Token> tokenList = ct.getTokenList();
+    List<Token> tokenList = ct.getTokenList().getTokens();
     assertEquals(expectedTokenCount, tokenList.size());
     for (Token t : tokenList) {
       logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
@@ -84,7 +84,7 @@ public class TokenizerTest {
     byte[] bytez = new TSerializer(new TBinaryProtocol.Factory()).serialize(t);
     Tokenization dT = new Tokenization();
     new TDeserializer(new TBinaryProtocol.Factory()).deserialize(dT, bytez);
-    assertEquals(4, dT.getTokenList().size());
+    assertEquals(4, dT.getTokenList().getTokensSize());
   }
 
   static String readFile(String path, Charset encoding) throws IOException {
