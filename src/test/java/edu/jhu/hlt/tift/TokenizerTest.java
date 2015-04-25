@@ -1,6 +1,7 @@
 package edu.jhu.hlt.tift;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -8,11 +9,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.thrift.TDeserializer;
-import org.apache.thrift.TException;
-import org.apache.thrift.TSerializer;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +22,8 @@ import edu.jhu.hlt.concrete.TextSpan;
 import edu.jhu.hlt.concrete.Token;
 import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
+import edu.jhu.hlt.concrete.serialization.BoundedThriftSerializer;
+import edu.jhu.hlt.concrete.util.ConcreteException;
 
 public class TokenizerTest {
 
@@ -42,7 +42,7 @@ public class TokenizerTest {
     String text = "hello world test tokens foo";
     int expectedTokenCount = 5;
     Tokenization ct = Tokenizer.WHITESPACE.tokenizeToConcrete(text, 0);
-    List<Token> tokenList = ct.getTokenList().getTokens();
+    List<Token> tokenList = ct.getTokenList().getTokenList();
     assertEquals(expectedTokenCount, tokenList.size());
     for (Token t : tokenList) {
       logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
@@ -56,7 +56,7 @@ public class TokenizerTest {
     String text = "hello world test foo :-)";
     int expectedTokenCount = 5;
     Tokenization ct = Tokenizer.TWITTER.tokenizeToConcrete(text, 0);
-    List<Token> tokenList = ct.getTokenList().getTokens();
+    List<Token> tokenList = ct.getTokenList().getTokenList();
     assertEquals(expectedTokenCount, tokenList.size());
     for (Token t : tokenList) {
       logger.info("Got token: {} with text: {}", t.getTokenIndex(), t.getText());
@@ -64,8 +64,12 @@ public class TokenizerTest {
       logger.info("Text span of this token: {} - {}", ts.getStart(), ts.getEnding());
     }
 
-    TokenTagging tt = ct.getPosTagList();
-    for (TaggedToken t : tt.getTaggedTokenList()) {
+    Optional<TokenTagging> tt = ct.getTokenTaggingList()
+        .stream()
+        .filter(tl -> tl.getTaggingType().equalsIgnoreCase("POS"))
+        .findFirst();
+    assertTrue(tt.isPresent());
+    for (TaggedToken t : tt.get().getTaggedTokenList()) {
       logger.info("Got tagging: {} on token: {}", t.getTag(), t.getTokenIndex());
     }
   }
@@ -78,13 +82,13 @@ public class TokenizerTest {
   }
   
   @Test
-  public void thriftReadWrite() throws TException {
+  public void thriftReadWrite() throws ConcreteException {
     String text = "hello world test tokens";
     Tokenization t = Tokenizer.TWITTER.tokenizeToConcrete(text, 0);
-    byte[] bytez = new TSerializer(new TBinaryProtocol.Factory()).serialize(t);
-    Tokenization dT = new Tokenization();
-    new TDeserializer(new TBinaryProtocol.Factory()).deserialize(dT, bytez);
-    assertEquals(4, dT.getTokenList().getTokensSize());
+    BoundedThriftSerializer<Tokenization> ser = new BoundedThriftSerializer<>(Tokenization.class);
+    byte[] bytez = ser.toBytes(t);
+    Tokenization dT = ser.fromBytes(bytez);
+    assertEquals(4, dT.getTokenList().getTokenListSize());
   }
 
   static String readFile(String path, Charset encoding) throws IOException {

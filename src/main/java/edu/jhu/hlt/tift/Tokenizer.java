@@ -268,7 +268,7 @@ public enum Tokenizer {
   
   public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition, UUID sentUuid) {
     return generateConcreteTokenization(tokenizationType, text, startPosition)
-        .setSentenceId(sentUuid);
+        .setUuid(sentUuid);
   }
 
   public static Tokenization generateConcreteTokenization(Tokenizer tokenizationType, String text, int startPosition) {

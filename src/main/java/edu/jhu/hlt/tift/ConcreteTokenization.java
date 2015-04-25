@@ -17,7 +17,7 @@ import edu.jhu.hlt.concrete.TokenList;
 import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.TokenizationKind;
-import edu.jhu.hlt.concrete.util.ConcreteUUIDFactory;
+import edu.jhu.hlt.concrete.uuid.UUIDFactory;
 
 /**
  * Utility class for {@link Tokenization} related code.
@@ -31,7 +31,6 @@ public class ConcreteTokenization {
 
   static {
     AnnotationMetadata am = new AnnotationMetadata();
-    am.setConfidence(1);
     am.setTimestamp(System.currentTimeMillis());
     am.setTool("Tift Tokenizer v2.0");
     tiftMetadata = new AnnotationMetadata(am);
@@ -78,9 +77,9 @@ public class ConcreteTokenization {
    */
   public static Tokenization generateConcreteTokenization(List<String> tokens, int[] offsets, int startPos) {
     Tokenization tkz = new Tokenization();
-    tkz.kind = TokenizationKind.TOKEN_LIST;
-    tkz.metadata = new AnnotationMetadata(tiftMetadata);
-    tkz.uuid = new ConcreteUUIDFactory().getConcreteUUID();
+    tkz.setKind(TokenizationKind.TOKEN_LIST);
+    tkz.setMetadata(new AnnotationMetadata(tiftMetadata));
+    tkz.setUuid(UUIDFactory.newUUID());
     
     TokenList tl = new TokenList();
     // Note: we use token index as token id.
@@ -91,7 +90,7 @@ public class ConcreteTokenization {
       TextSpan ts = new TextSpan(start, end);
       Token tokenObj = new Token();
       tokenObj.setTextSpan(ts).setText(token).setTokenIndex(tokenId);
-      tl.addToTokens(tokenObj);
+      tl.addToTokenList(tokenObj);
     }
 
     tkz.setTokenList(tl);
@@ -134,7 +133,8 @@ public class ConcreteTokenization {
   public static Tokenization generateConcreteTokenization(List<String> tokens, List<String> tokenTags, int[] offsets, int startPos) {
     Tokenization tokenization = generateConcreteTokenization(tokens, offsets, startPos);
     TokenTagging tt = new TokenTagging();
-    tt.setUuid(new ConcreteUUIDFactory().getConcreteUUID());
+    tt.setUuid(UUIDFactory.newUUID());
+    tt.setTaggingType("POS");
     tt.setMetadata(new AnnotationMetadata(tiftMetadata));
     for (int i = 0; i < tokens.size(); i++) {
       String tag = tokenTags.get(i);
@@ -147,7 +147,7 @@ public class ConcreteTokenization {
     
     // Do not set the pos tags if everything was "null".
     if (tt.isSetTaggedTokenList())
-      tokenization.setPosTagList(tt);
+      tokenization.addToTokenTaggingList(tt);
     
     return tokenization;
   }

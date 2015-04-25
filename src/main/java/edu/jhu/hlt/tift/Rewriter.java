@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import edu.jhu.hlt.tift.PatternStringTuple;
+
 /**
  * Enumeration of available "text rewriting" tools. 
  * 
@@ -18,28 +20,30 @@ import java.util.regex.Pattern;
  *
  */
 public enum Rewriter {
-    PTB {
-        @Override
-        public String rewrite(String text) {
-            return rewrite(text, PTB_PATTERNS);
-        }
-    }, BASIC {
-        @Override
-        public String rewrite(String text) {
-            return rewrite(text, BASIC_PATTERNS);
-        }
-    }, COMMON_UNICODE {
-        @Override
-        public String rewrite(String text) {
-            return rewrite(text, COMMON_UNICODE_PATTERNS);
-        }
-    };
+  PTB {
+    @Override
+    public String rewrite(String text) {
+      return rewrite(text, PTB_PATTERNS);
+    }
+  },
+  BASIC {
+    @Override
+    public String rewrite(String text) {
+      return rewrite(text, BASIC_PATTERNS);
+    }
+  },
+  COMMON_UNICODE {
+    @Override
+    public String rewrite(String text) {
+      return rewrite(text, COMMON_UNICODE_PATTERNS);
+    }
+  };
 
-    public abstract String rewrite (String text);
+  public abstract String rewrite(String text);
 
-    public static final Set<PatternStringTuple> PTB_PATTERNS = getPTBPatterns();
-    public static final Set<PatternStringTuple> BASIC_PATTERNS = getBasicPatterns();
-    public static final Set<PatternStringTuple> COMMON_UNICODE_PATTERNS = getCommonUnicodePatterns();
+  public static final Set<PatternStringTuple> PTB_PATTERNS = getPTBPatterns();
+  public static final Set<PatternStringTuple> BASIC_PATTERNS = getBasicPatterns();
+  public static final Set<PatternStringTuple> COMMON_UNICODE_PATTERNS = getCommonUnicodePatterns();
 
     private static Set<PatternStringTuple> getCommonUnicodePatterns () {
         // vandurme: I went through the top 100 unicode characters in a large
@@ -255,19 +259,19 @@ public enum Rewriter {
         return convertStringArrayPatternsToTupleSet(v);
     }
 
-    private static Set<PatternStringTuple> convertStringArrayPatternsToTupleSet(String[] patternArray) {
-        Set<PatternStringTuple> patterns = new HashSet<PatternStringTuple>(patternArray.length);
-        for (int i = 0; i < patternArray.length - 1; i += 2) 
-            patterns.add(new PatternStringTuple(Pattern.compile(patternArray[i], Pattern.MULTILINE), patternArray[i + 1]));
+  private static Set<PatternStringTuple> convertStringArrayPatternsToTupleSet(String[] patternArray) {
+    Set<PatternStringTuple> patterns = new HashSet<PatternStringTuple>(patternArray.length);
+    for (int i = 0; i < patternArray.length - 1; i += 2)
+      patterns.add(new PatternStringTuple(Pattern.compile(patternArray[i], Pattern.MULTILINE), patternArray[i + 1]));
 
-        return Collections.unmodifiableSet(patterns);
-    }
+    return Collections.unmodifiableSet(patterns);
+  }
 
-    private static String rewrite(String text, Set<PatternStringTuple> patterns) {
-        String x = text;
-        for (PatternStringTuple pair : patterns)
-            x = pair.getPattern().matcher(x).replaceAll(pair.getEntry());
+  private static String rewrite(String text, Set<PatternStringTuple> patterns) {
+    String x = text;
+    for (PatternStringTuple pair : patterns)
+      x = pair.getPattern().matcher(x).replaceAll(pair.getEntry());
 
-        return x.trim();
-    }
+    return x.trim();
+  }
 }

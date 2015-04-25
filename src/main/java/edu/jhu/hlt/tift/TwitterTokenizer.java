@@ -70,42 +70,42 @@ import java.util.regex.Pattern;
  * - Jason Baldridge (jasonbaldridge@gmail.com) June 2011
  */
 public class TwitterTokenizer {
-    private static final List<PatternStringTuple> tupleList = new ArrayList<>();
+  private static final List<PatternStringTuple> tupleList = new ArrayList<>();
 
-    private static final String START = "(?<=^|\\s)";
-    private static final String START_W_PAREN = "(?<=^|\\s|\\()";
-    private static final String START_W_PAREN_DBQUOTE = "(?<=^|\\s|\\(|\"|\u201c|\u201d|\u201e|\u201f|\u275d|\u275e)";
-    private static final String END = "(?=$|\\s)";
-    private static final String END_W_PAREN = "(?=$|\\s|\\))";
-    
-    private static boolean rw = false;
+  private static final String START = "(?<=^|\\s)";
+  private static final String START_W_PAREN = "(?<=^|\\s|\\()";
+  private static final String START_W_PAREN_DBQUOTE = "(?<=^|\\s|\\(|\"|\u201c|\u201d|\u201e|\u201f|\u275d|\u275e)";
+  private static final String END = "(?=$|\\s)";
+  private static final String END_W_PAREN = "(?=$|\\s|\\))";
 
-    static {
-        try {
-            initializePatterns();
-        } catch (IOException ioe) {
-            throw new RuntimeException("Error initializing unicode tokenization.", ioe);
-        }
+  private static boolean rw = false;
+
+  static {
+    try {
+      initializePatterns();
+    } catch (IOException ioe) {
+      throw new RuntimeException("Error initializing unicode tokenization.", ioe);
     }
+  }
 
-    private static void initializePatterns() throws IOException {
-        // email before URL, as they both things like ".com", but email has
-        // '@' email before mention, as anything not email with an '@' is
-        // likely to be a mention
-        tupleList.add(getEmailPatterns());
-        tupleList.add(getMentionPatterns());
-        tupleList.addAll(getURLPatterns());
-        tupleList.add(getWesternEmoticonPatterns());
-        tupleList.add(getEasternEmoticonPatterns());
-        tupleList.add(getMiscEmoticonPatterns());
-        tupleList.add(getHeartPatterns());
-        tupleList.add(getHashtagPatterns());
-        tupleList.add(getLeftArrowPatterns());
-        tupleList.add(getRightArrowPatterns());
-        tupleList.addAll(getRepeatedPatterns());
-        tupleList.addAll(getUnicodePatterns());
-        tupleList.add(getNumberPatterns());
-    }
+  private static void initializePatterns() throws IOException {
+    // email before URL, as they both things like ".com", but email has
+    // '@' email before mention, as anything not email with an '@' is
+    // likely to be a mention
+    tupleList.add(getEmailPatterns());
+    tupleList.add(getMentionPatterns());
+    tupleList.addAll(getURLPatterns());
+    tupleList.add(getWesternEmoticonPatterns());
+    tupleList.add(getEasternEmoticonPatterns());
+    tupleList.add(getMiscEmoticonPatterns());
+    tupleList.add(getHeartPatterns());
+    tupleList.add(getHashtagPatterns());
+    tupleList.add(getLeftArrowPatterns());
+    tupleList.add(getRightArrowPatterns());
+    tupleList.addAll(getRepeatedPatterns());
+    tupleList.addAll(getUnicodePatterns());
+    tupleList.add(getNumberPatterns());
+  }
 
     public static List<PatternStringTuple> getURLPatterns() {
         // "p:" gets picked up by the emoticon pattern, so order of patterns is
@@ -296,140 +296,131 @@ public class TwitterTokenizer {
         return tupleList;
     }
 
-    public static List<PatternStringTuple> getUnicodePatterns() throws IOException {
-        List<PatternStringTuple> tupleList = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(TwitterTokenizer.class.getClassLoader()
-                .getResourceAsStream("unicode.csv")));
-        String line;
-        String[] toks;
-        char[] pair;
-        String regexp;
-        while ((line = reader.readLine()) != null) {
-            toks = line.split(",");
-            if (toks[0].length() > 4) {
-                pair = Character.toChars(Integer.decode("0x" + toks[0]));
-                regexp = "(" + pair[0] + pair[1] + ")";
-                tupleList.add(new PatternStringTuple(Pattern.compile(regexp), toks[1]));
-            }
-            regexp = "(\\u" + toks[0] + ")";
-            tupleList.add(new PatternStringTuple(Pattern.compile(regexp), toks[1]));
+  public static List<PatternStringTuple> getUnicodePatterns() throws IOException {
+    List<PatternStringTuple> tupleList = new ArrayList<>();
+    BufferedReader reader = new BufferedReader(new InputStreamReader(TwitterTokenizer.class.getClassLoader().getResourceAsStream("unicode.csv")));
+    String line;
+    String[] toks;
+    char[] pair;
+    String regexp;
+    while ((line = reader.readLine()) != null) {
+      toks = line.split(",");
+      if (toks[0].length() > 4) {
+        pair = Character.toChars(Integer.decode("0x" + toks[0]));
+        regexp = "(" + pair[0] + pair[1] + ")";
+        tupleList.add(new PatternStringTuple(Pattern.compile(regexp), toks[1]));
+      }
+      regexp = "(\\u" + toks[0] + ")";
+      tupleList.add(new PatternStringTuple(Pattern.compile(regexp), toks[1]));
+    }
+
+    reader.close();
+
+    return tupleList;
+  }
+
+  /**
+   * Returns 3 arrays:
+   * 
+   * tokenization tokenzation tags code point offsets
+   */
+  public static String[][] tokenizeToArray(String text) {
+    List<TokenTagTuple> x = recursiveTokenize(text.trim(), 0, Tokenizer.BASIC);
+
+    String[][] y = new String[3][];
+    y[0] = new String[x.size()];
+    y[1] = new String[x.size()];
+    y[2] = new String[x.size()];
+
+    for (int i = 0; i < x.size(); i++) {
+      y[0][i] = x.get(i).getToken();
+      y[1][i] = x.get(i).getTag();
+    }
+    int[] z = Tokenizer.getOffsets(text, y[0]);
+    for (int i = 0; i < z.length; i++)
+      y[2][i] = "" + z[i];
+
+    return y;
+  }
+
+  public static TaggedTokenizationOutput tokenize(String text) {
+    return new TaggedTokenizationOutput(tokenizeToArray(text));
+  }
+
+  public static String[] tokenizeTweet(String text) {
+    return tokenizeTweet(text, Tokenizer.BASIC);
+  }
+
+  public static String[] tokenizeTweet(String text, Tokenizer tokenization) {
+    List<TokenTagTuple> x = recursiveTokenize(text.trim(), 0, tokenization);
+
+    String[] y = new String[x.size()];
+    if (!rw) {
+      for (int i = 0; i < x.size(); i++)
+        y[i] = x.get(i).getToken();
+    } else {
+      for (int i = 0; i < x.size(); i++) {
+        if (x.get(i).getTag() != null)
+          y[i] = "[" + x.get(i).getTag() + "]";
+        else
+          y[i] = x.get(i).getToken();
+      }
+    }
+    return y;
+  }
+
+  private static List<TokenTagTuple> recursiveTokenize(String text, int index, Tokenizer tokenization) {
+    if (index < tupleList.size()) {
+      PatternStringTuple pst = tupleList.get(index);
+      Pattern pattern = pst.getPattern();
+      String tag = pst.getEntry();
+      Matcher matcher;
+      matcher = pattern.matcher(text);
+      int groupCount = matcher.groupCount();
+      String textFragment = "";
+      if (groupCount > 0) {
+        List<List<TokenTagTuple>> arrays = new ArrayList<>();
+        int lastEnd = 0;
+        while (matcher.find()) {
+          if (matcher.start() > lastEnd) {
+            textFragment = text.substring(lastEnd, matcher.start()).trim();
+            if (textFragment.length() > 0) // possible could have
+                                           // started all as
+                                           // whitespace
+              arrays.add(recursiveTokenize(textFragment, index + 1, tokenization));
+          }
+          // System.out.println("[" + matcher.group() + "] " +
+          // matcher.start() + " " + matcher.end());
+          List<TokenTagTuple> tmpList = new ArrayList<>();
+          tmpList.add(new TokenTagTuple(matcher.group(), tag));
+          arrays.add(tmpList);
+          lastEnd = matcher.end();
         }
-        
-        reader.close();
-        
-        return tupleList;
-        // SimpleImmutableEntry<Pattern,String>[] y = new
-        // SimpleImmutableEntry[x.length/2];
-        // for (int i = 0; i < x.length -1; i+=2)
-        // y[i/2] = new SimpleImmutableEntry(Pattern.compile(x[i]),x[i+1]);
+        if (lastEnd < text.length())
+          arrays.add(recursiveTokenize(text.substring(lastEnd, text.length()).trim(), index + 1, tokenization));
 
-        // return y;
+        return concatAll(arrays);
+      } else {
+        return recursiveTokenize(text.trim(), index + 1, tokenization);
+      }
+    } else {
+      List<String> tokenList = tokenization.tokenize(text);
+      List<TokenTagTuple> y = new ArrayList<>(tokenList.size());
+      for (String token : tokenList)
+        y.add(new TokenTagTuple(token, null));
+      return y;
     }
+  }
 
-    /**
-     * Returns 3 arrays: 
-     * 
-     * tokenization 
-     * tokenzation tags 
-     * code point offsets
-     */
-    public static String[][] tokenizeToArray(String text) {
-        List<TokenTagTuple> x = recursiveTokenize(text.trim(), 0, Tokenizer.BASIC);
+  public static List<TokenTagTuple> concatAll(List<List<TokenTagTuple>> arrays) {
+    int totalLength = 0;
+    for (List<TokenTagTuple> array : arrays)
+      totalLength += array.size();
 
-        String[][] y = new String[3][];
-        y[0] = new String[x.size()];
-        y[1] = new String[x.size()];
-        y[2] = new String[x.size()];
+    List<TokenTagTuple> result = new ArrayList<>(totalLength);
+    for (List<TokenTagTuple> array : arrays)
+      result.addAll(array);
 
-        for (int i = 0; i < x.size(); i++) {
-            y[0][i] = x.get(i).getToken();
-            y[1][i] = x.get(i).getTag();
-        }
-        int[] z = Tokenizer.getOffsets(text, y[0]);
-        for (int i = 0; i < z.length; i++)
-            y[2][i] = "" + z[i];
-
-        return y;
-    }
-    
-    public static TaggedTokenizationOutput tokenize(String text) {
-        return new TaggedTokenizationOutput(tokenizeToArray(text));
-    }
-
-    public static String[] tokenizeTweet(String text) {
-        return tokenizeTweet(text, Tokenizer.BASIC);
-    }
-
-    public static String[] tokenizeTweet(String text, Tokenizer tokenization) {
-        List<TokenTagTuple> x = recursiveTokenize(text.trim(), 0, tokenization);
-
-        String[] y = new String[x.size()];
-        if (!rw) {
-            for (int i = 0; i < x.size(); i++)
-                y[i] = x.get(i).getToken();
-        } else {
-            for (int i = 0; i < x.size(); i++) {
-                if (x.get(i).getTag() != null)
-                    y[i] = "[" + x.get(i).getTag() + "]";
-                else
-                    y[i] = x.get(i).getToken();
-            }
-        }
-        return y;
-    }
-
-    private static List<TokenTagTuple> recursiveTokenize(String text, int index, Tokenizer tokenization) {
-        if (index < tupleList.size()) {
-            PatternStringTuple pst = tupleList.get(index);
-            Pattern pattern = pst.getPattern();
-            String tag = pst.getEntry();
-            Matcher matcher;
-            matcher = pattern.matcher(text);
-            int groupCount = matcher.groupCount();
-            String textFragment = "";
-            if (groupCount > 0) {
-                List<List<TokenTagTuple>> arrays = new ArrayList<>();
-                int lastEnd = 0;
-                while (matcher.find()) {
-                    if (matcher.start() > lastEnd) {
-                        textFragment = text.substring(lastEnd, matcher.start()).trim();
-                        if (textFragment.length() > 0) // possible could have
-                                                       // started all as
-                                                       // whitespace
-                            arrays.add(recursiveTokenize(textFragment, index + 1, tokenization));
-                    }
-                    // System.out.println("[" + matcher.group() + "] " +
-                    // matcher.start() + " " + matcher.end());
-                    List<TokenTagTuple> tmpList = new ArrayList<>();
-                    tmpList.add(new TokenTagTuple(matcher.group(), tag));
-                    arrays.add(tmpList);
-                    lastEnd = matcher.end();
-                }
-                if (lastEnd < text.length())
-                    arrays.add(recursiveTokenize(text.substring(lastEnd, text.length()).trim(), index + 1, tokenization));
-
-                return concatAll(arrays);
-            } else {
-                return recursiveTokenize(text.trim(), index + 1, tokenization);
-            }
-        } else {
-            List<String> tokenList = tokenization.tokenize(text);
-            List<TokenTagTuple> y = new ArrayList<>(tokenList.size());
-            for (String token : tokenList)
-                y.add(new TokenTagTuple(token, null));
-            return y;
-        }
-    }
-
-    public static List<TokenTagTuple> concatAll(List<List<TokenTagTuple>> arrays) {
-        int totalLength = 0;
-        for (List<TokenTagTuple> array : arrays)
-            totalLength += array.size();
-        
-        List<TokenTagTuple> result = new ArrayList<>(totalLength);
-        for (List<TokenTagTuple> array : arrays)
-            result.addAll(array);
-        
-        return result;
-    }
+    return result;
+  }
 }
