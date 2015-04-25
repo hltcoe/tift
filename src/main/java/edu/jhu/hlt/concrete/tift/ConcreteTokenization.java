@@ -3,7 +3,7 @@
  * This software is released under the 2-clause BSD license.
  * See LICENSE in the project root directory.
  */
-package edu.jhu.hlt.tift;
+package edu.jhu.hlt.concrete.tift;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,12 +18,10 @@ import edu.jhu.hlt.concrete.TokenTagging;
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.TokenizationKind;
 import edu.jhu.hlt.concrete.uuid.UUIDFactory;
+import edu.jhu.hlt.tift.TaggedTokenizationOutput;
 
 /**
  * Utility class for {@link Tokenization} related code.
- * 
- * @author max
- * 
  */
 public class ConcreteTokenization {
 
@@ -32,7 +30,7 @@ public class ConcreteTokenization {
   static {
     AnnotationMetadata am = new AnnotationMetadata();
     am.setTimestamp(System.currentTimeMillis());
-    am.setTool("Tift Tokenizer v2.0");
+    am.setTool("Tift Tokenizer v4.4.0");
     tiftMetadata = new AnnotationMetadata(am);
   }
   

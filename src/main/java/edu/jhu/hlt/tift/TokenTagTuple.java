@@ -8,9 +8,6 @@ package edu.jhu.hlt.tift;
 
 /**
  * 2-tuple that contains a token and a tag.
- * 
- * @author max
- *
  */
 public class TokenTagTuple {
 

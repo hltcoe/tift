@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Wrapper for mass SimpleImmutableEntry<Pattern, String> in TwitterTokenizer.
+ * Wrapper for mass {@code SimpleImmutableEntry<Pattern, String>} in TwitterTokenizer.
  */
 public class PatternStringTuple {
   private final Pattern pattern;
@@ -19,8 +19,8 @@ public class PatternStringTuple {
   /**
    * Default constructor.
    * 
-   * @param pattern
-   * @param entry
+   * @param pattern the pattern
+   * @param entry the entry
    */
   public PatternStringTuple(Pattern pattern, String entry) {
     this.pattern = pattern;

@@ -15,27 +15,24 @@ import edu.jhu.hlt.tift.PatternStringTuple;
 
 /**
  * Enumeration of available "text rewriting" tools. 
- * 
- * @author max
- *
  */
 public enum Rewriter {
   PTB {
     @Override
     public String rewrite(String text) {
-      return rewrite(text, PTB_PATTERNS);
+      return Rewriter.rewrite(text, PTB_PATTERNS);
     }
   },
   BASIC {
     @Override
     public String rewrite(String text) {
-      return rewrite(text, BASIC_PATTERNS);
+      return Rewriter.rewrite(text, BASIC_PATTERNS);
     }
   },
   COMMON_UNICODE {
     @Override
     public String rewrite(String text) {
-      return rewrite(text, COMMON_UNICODE_PATTERNS);
+      return Rewriter.rewrite(text, COMMON_UNICODE_PATTERNS);
     }
   };
 

@@ -22,7 +22,8 @@ import java.util.regex.Pattern;
 
 /**
  * Recognizes various Twitter related tokens, runs PTB tokenization on the rest.
- * 
+ */
+/*
  * Based on combination of patterns from an older tokenizer of my own, the PTB
  * patterns, and those of two other Twitter tokenizers:
  * 
@@ -166,10 +167,10 @@ public class TwitterTokenizer {
                 "EAST_EMOTICON");
     }
 
-    public static PatternStringTuple getNumberPatterns() {
-        // times, dates, money, ...
-        return new PatternStringTuple("(\\d+([:,\\./]\\d+)+)", "NUMBER");
-    }
+  public static PatternStringTuple getNumberPatterns() {
+    // times, dates, money, ...
+    return new PatternStringTuple("(\\d+([:,\\./]\\d+)+)", "NUMBER");
+  }
 
     public static PatternStringTuple getPhoneNumberPatterns() {
         // From Potts
@@ -192,40 +193,40 @@ public class TwitterTokenizer {
                 "PhoneNumber");
     }
 
-    public static PatternStringTuple getMentionPatterns() {
-        // return Pattern.compile(START + "(@[_A-Za-z0-9]+)" + "(?=$|\\s|:)");
-        return new PatternStringTuple(START_W_PAREN_DBQUOTE + "(@[_A-Za-z0-9]+)", "MENTION");
-        // return getPairs("(?<=^|\\s|\\()" + "(@[_A-Za-z0-9]+)", "MENTION");
-    }
+  public static PatternStringTuple getMentionPatterns() {
+    // return Pattern.compile(START + "(@[_A-Za-z0-9]+)" + "(?=$|\\s|:)");
+    return new PatternStringTuple(START_W_PAREN_DBQUOTE + "(@[_A-Za-z0-9]+)", "MENTION");
+    // return getPairs("(?<=^|\\s|\\()" + "(@[_A-Za-z0-9]+)", "MENTION");
+  }
 
-    public static PatternStringTuple getHeartPatterns() {
-        // grabbed from twokenize
-        return new PatternStringTuple(START + "((<)|(&lt))+/?3+" + END, "HEART");
-    }
+  public static PatternStringTuple getHeartPatterns() {
+    // grabbed from twokenize
+    return new PatternStringTuple(START + "((<)|(&lt))+/?3+" + END, "HEART");
+  }
 
-    public static PatternStringTuple getMiscEmoticonPatterns() {
-        return new PatternStringTuple(START + "((\\\\m/)|(\\\\o/))" + END, "MISC_EMOTICON");
-    }
+  public static PatternStringTuple getMiscEmoticonPatterns() {
+    return new PatternStringTuple(START + "((\\\\m/)|(\\\\o/))" + END, "MISC_EMOTICON");
+  }
 
-    public static PatternStringTuple getHashtagPatterns() {
-        // Potts: "(\\#+[\\w_]+[\\w\\'_\\-]*[\\w_]+)"
-        // twokenize: #[a-zA-Z0-9_]+
-        // comment from twokenize:
-        // "also gets #1 #40 which probably aren't hashtags .. but good as tokens"
-        return new PatternStringTuple(START + "(\\#+[\\w_]+[\\w\\'_\\-]*[\\w_]+)" + END, "HASHTAG");
-    }
+  public static PatternStringTuple getHashtagPatterns() {
+    // Potts: "(\\#+[\\w_]+[\\w\\'_\\-]*[\\w_]+)"
+    // twokenize: #[a-zA-Z0-9_]+
+    // comment from twokenize:
+    // "also gets #1 #40 which probably aren't hashtags .. but good as tokens"
+    return new PatternStringTuple(START + "(\\#+[\\w_]+[\\w\\'_\\-]*[\\w_]+)" + END, "HASHTAG");
+  }
 
-    public static PatternStringTuple getLeftArrowPatterns() {
-        // twokenize: """(<*[-=]*>+|<+[-=]*>*)"""
-        // this is more conservative
-        return new PatternStringTuple("((<|(&lt))+[-=]+)" + END, "LEFT_ARROW");
-    }
+  public static PatternStringTuple getLeftArrowPatterns() {
+    // twokenize: """(<*[-=]*>+|<+[-=]*>*)"""
+    // this is more conservative
+    return new PatternStringTuple("((<|(&lt))+[-=]+)" + END, "LEFT_ARROW");
+  }
 
-    public static PatternStringTuple getRightArrowPatterns() {
-        // twokenize: """(<*[-=]*>+|<+[-=]*>*)"""
-        // this is more conservative
-        return new PatternStringTuple(START + "([-=]+(>|(&gt))+)", "RIGHT_ARROW");
-    }
+  public static PatternStringTuple getRightArrowPatterns() {
+    // twokenize: """(<*[-=]*>+|<+[-=]*>*)"""
+    // this is more conservative
+    return new PatternStringTuple(START + "([-=]+(>|(&gt))+)", "RIGHT_ARROW");
+  }
 
     /**
      * Best to run these patterns before mentionPattern

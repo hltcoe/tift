@@ -15,11 +15,10 @@ import java.util.List;
 
 import edu.jhu.hlt.concrete.Tokenization;
 import edu.jhu.hlt.concrete.UUID;
+import edu.jhu.hlt.concrete.tift.ConcreteTokenization;
 
 /**
  * Enumeration of supported tokenizations.
- * 
- * @author max
  */
 public enum Tokenizer {
 
